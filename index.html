@@ -37,7 +37,7 @@ html{
   align-items:center;
   justify-content:space-between;
   padding:15px 30px;
-  background:linear-gradient(135deg,#ff1e1e 40%, #ffffff 40%);
+  background:linear-gradient(135deg,#ff1e1e 40%, #555050 40%);
   position:relative;
   z-index:1000;
 }
@@ -56,7 +56,7 @@ html{
   color:#ff1e1e;
 }
 .hamburger{
-  background:white;
+  background:rgb(122, 122, 122);
   padding:6px 10px;
   border-radius:50%;
   box-shadow:0 4px 10px rgba(0,0,0,0.2);
@@ -76,7 +76,7 @@ html{
 
 .nav a{
   text-decoration:none;
-  color:#111;
+  color:#ffffff;
   cursor:pointer;
 }
 
@@ -167,7 +167,7 @@ html{
 /* ================= HERO ================= */
 .hero{
   height:90vh;
-  background:url('flight-bg.jpg') center/cover no-repeat;
+  background:url('bgwhole.webp') center/cover no-repeat;
   display:flex;
   align-items:center;
   justify-content:space-between;
@@ -320,7 +320,7 @@ h1 span{ color:#ff1e1e; }
   align-items:center;
   justify-content:space-between;
   padding:15px 30px;
-  background:linear-gradient(135deg,#ff1e1e 40%, #ffffff 40%);
+  background:linear-gradient(135deg,#ff1e1e 40%, #676767 40%);
   position:fixed;      /* ✅ fixed */
   top:0;
   left:0;
@@ -330,7 +330,19 @@ h1 span{ color:#ff1e1e; }
 body{
   padding-top:80px;   /* adjust if header height changes */
 }
-
+.dropdown-menu{
+  display:none !important;
+}
+/* when dropdown is opened */
+.dropdown-menu.open{
+  display:block !important;
+}
+.btn-link{
+  text-decoration:none;
+}
+.cta-link{
+  text-decoration:none;
+}
 </style>
 </head>
 
@@ -345,22 +357,22 @@ body{
 <nav class="nav">
   <ul>
     <li class="dropdown">
-      <a href="404.html" onclick="toggleDesktopDropdown(); return false;">Home ▾</a>
+<a href="index.html" onclick="toggleDesktopDropdown(event)">Home ▾</a>
       <ul class="dropdown-menu" id="desktopDropdown">
-        <li><a href="404.html">Home</a></li>
-        <li><a href="404.html">Home 2</a></li>
+        <li><a href="home2.html">Home 2</a></li>
       </ul>
     </li>
-    <li><a href="404.html">About</a></li>
-    <li><a href="404.html">Tickets</a></li>
-    <li><a href="404.html">Blog</a></li>
-    <li><a href="404.html">Contact</a></li>
+    <li><a href="about.html">About</a></li>
+    <li><a href="tickets.html">Tickets</a></li>
+    <li><a href="blog.html">Blog</a></li>
+    <li><a href="contact.html">Contact</a></li>
   </ul>
 </nav>
 
 
- <button class="sign-in" onclick="location.href='404.html'">Sign In</button>
-
+<a href="login.html" class="btn-link">
+  <button class="sign-in" type="button">Sign In</button>
+</a>
 
   <div class="hamburger" id="hamburgerIcon" onclick="toggleMobileMenu()">
     <i class="fas fa-bars"></i>
@@ -373,20 +385,19 @@ body{
    <ul>
   <li onclick="toggleMobileDropdown()">Home ▾</li>
   <ul class="mobile-dropdown" id="mobileDropdown">
-    <li onclick="location.href='404.html'">Home</li>
-    <li onclick="location.href='404.html'">Home 2</li>
+    <li onclick="location.href='home2.html'">Home 2</li>
   </ul>
 
-  <li onclick="location.href='404.html'">About</li>
-  <li onclick="location.href='404.html'">Tickets</li>
-  <li onclick="location.href='404.html'">Blog</li>
-  <li onclick="location.href='404.html'">Contact</li>
+  <li onclick="location.href='about.html'">About</li>
+  <li onclick="location.href='tickets.html'">Tickets</li>
+  <li onclick="location.href='blog.html'">Blog</li>
+  <li onclick="location.href='contact.html'">Contact</li>
 </ul>
 
 
   <div class="mobile-auth">
-    <button class="login" onclick="location.href='404.html'">Sign In</button>
-<button class="signup" onclick="location.href='404.html'">Sign Up</button>
+    <button class="login" onclick="location.href='login.html'">Sign In</button>
+<button class="signup" onclick="location.href='login.html'">Sign Up</button>
 
   </div>
 </div>
@@ -400,7 +411,9 @@ body{
     <h1 id="title">Luxury <span>Aviation</span><br>Private Jet</h1>
     <p id="desc">Safe, Secure & Reliable Flight Booking</p>
 
-    <button class="cta">Contact Us</button>
+    <a href="contact.html" class="cta-link">
+  <button class="cta" type="button">Contact Us</button>
+</a>
 
     <div class="modes">
       <div class="mode active" onclick="changeMode(0)">✈ Flight</div>
@@ -438,12 +451,6 @@ function updateHero(){
 
 setInterval(()=>{index=(index+1)%modes.length;updateHero();},5000);
 
-/* DESKTOP DROPDOWN */
-function toggleDesktopDropdown(){
- const d=document.getElementById("desktopDropdown");
- d.style.display=d.style.display==="block"?"none":"block";
-}
-
 /* MOBILE MENU TOGGLE */
 function toggleMobileMenu(){
  const menu=document.getElementById("mobileMenu");
@@ -468,6 +475,20 @@ function toggleMobileDropdown(){
  const d=document.getElementById("mobileDropdown");
  d.style.display=d.style.display==="block"?"none":"block";
 }
+/* DESKTOP DROPDOWN — CORRECT */
+function toggleDesktopDropdown(e){
+  e.preventDefault();
+  e.stopPropagation();   // 🔑 THIS WAS MISSING
+
+  const d = document.getElementById("desktopDropdown");
+  d.classList.toggle("open");
+}
+
+/* close ONLY when clicking outside dropdown */
+document.addEventListener("click", function(){
+  const d = document.getElementById("desktopDropdown");
+  d.classList.remove("open");
+});
 </script>
 
 <div class="search-card">
@@ -510,7 +531,7 @@ function toggleMobileDropdown(){
 
 <style>
 .search-card{
-  background:url("doon.jpg") center/cover repeat;
+  background:url("doon.webp") center/cover repeat;
   text-align:center;
   border-radius:18px;
   padding:25px;
@@ -781,7 +802,7 @@ function hideError(){
   /* SAME BG AS SEARCH CARD */
 .packages-section{
   padding:80px 40px;
-  background:url("dood.jpg") center/cover repeat;
+  background:url("dood.webp") center/cover repeat;
   text-align:center;
 }
 
@@ -1158,7 +1179,7 @@ setInterval(()=>{
       Choosing The Right Private Jet Is Essential
     </p>
 
-    <button class="promo-btn" onclick="window.location.href='404.html'">
+    <button class="promo-btn" onclick="window.location.href='contact.html'">
       CONTACT US
     </button>
   </div>
@@ -1378,7 +1399,7 @@ setInterval(()=>{
   /* SECTION BACKGROUND */
 .why-section{
   padding:100px 60px;
-  background:url("dood.jpg") center/cover no-repeat;
+  background:url("dood.webp") center/cover no-repeat;
 }
 
 /* CONTAINER */
@@ -1776,7 +1797,7 @@ setInterval(()=>{
   padding:100px 60px;
   background:
     linear-gradient(rgba(0,0,0,0.55),rgba(0,0,0,0.55)),
-    url("testi-bg.jpg") center/cover no-repeat;
+    url("bgwhole.webp") center/cover no-repeat;
   text-align:center;
   color:#fff;
 }
@@ -1881,7 +1902,10 @@ setInterval(() => {
 
     <!-- BRAND -->
     <div class="footer-brand">
-      <img src="logo.webp" alt="Stackly Logo" class="footer-logo">
+      <a href="404.html">
+        <img src="logo.webp" alt="Stackly Logo" class="footer-logo">
+      </a>
+
       <p>
         We provide smart, reliable, and modern solutions to help your business
         grow digitally with confidence.
@@ -1889,7 +1913,7 @@ setInterval(() => {
 
       <div class="support">
         <span>📞 Call Support</span>
-        <h3>+91 98765 43210</h3>
+        <h3><a href="404.html">+91 98765 43210</a></h3>
       </div>
 
       <div class="social-icons">
@@ -1903,11 +1927,11 @@ setInterval(() => {
     <div class="footer-links">
       <h4>Useful Links</h4>
       <ul>
-        <li>› Company Profile</li>
-        <li>› Help Center</li>
-        <li>› Contact Us</li>
-        <li>› Social Marketing</li>
-        <li>› Blog</li>
+        <li><a href="404.html">› Company Profile</a></li>
+        <li><a href="404.html">› Help Center</a></li>
+        <li><a href="404.html">› Contact Us</a></li>
+        <li><a href="404.html">› Social Marketing</a></li>
+        <li><a href="404.html">› Blog</a></li>
       </ul>
     </div>
 
@@ -1915,15 +1939,14 @@ setInterval(() => {
     <div class="footer-links">
       <h4>Our Services</h4>
       <ul>
-        <li>› Application Assistance</li>
-        <li>› Ticket Guidance</li>
-        <li>› Documentation Support</li>
-        <li>› Social Marketing</li>
-        <li>› License</li>
+        <li><a href="404.html">› Application Assistance</a></li>
+        <li><a href="404.html">› Ticket Guidance</a></li>
+        <li><a href="404.html">› Documentation Support</a></li>
+        <li><a href="404.html">› Social Marketing</a></li>
+        <li><a href="404.html">› License</a></li>
       </ul>
     </div>
 
-    
   </div>
 
   <!-- COPYRIGHT -->
@@ -1936,133 +1959,128 @@ setInterval(() => {
     </div>
   </div>
 </footer>
-
 <style>
-  .footer {
-  background: #0f172a;
-  color: #fff;
-  font-family: 'Poppins', sans-serif;
+  .footer{
+  background:#0f172a;
+  color:#fff;
+  font-family:'Poppins',sans-serif;
 }
 
-.footer-container {
-  max-width: 1200px;
-  margin: auto;
-  padding: 60px 20px;
-  display: grid;
-  grid-template-columns: 1.4fr 1fr 1fr 1fr;
-  gap: 40px;
+.footer-container{
+  max-width:1200px;
+  margin:auto;
+  padding:60px 20px;
+  display:grid;
+  grid-template-columns:1.4fr 1fr 1fr;
+  gap:40px;
 }
 
-.footer-logo {
-  width: 160px;
-  margin-bottom: 20px;
+.footer-logo{
+  width:160px;
+  margin-bottom:20px;
 }
 
-.footer-brand p {
-  color: #cbd5e1;
-  font-size: 14px;
-  line-height: 1.6;
+.footer-brand p{
+  color:#cbd5e1;
+  font-size:14px;
+  line-height:1.6;
 }
 
-.support {
-  margin: 20px 0;
+.support{
+  margin:20px 0;
 }
 
-.support h3 {
-  color: #ff3b3b;
-  font-size: 20px;
+.support h3 a{
+  color:#ff3b3b;
+  font-size:20px;
+  text-decoration:none;
 }
 
-.social-icons a {
-  display: inline-flex;
-  margin-right: 10px;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: #1e293b;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-  transition: 0.3s;
+.social-icons a{
+  display:inline-flex;
+  margin-right:10px;
+  width:40px;
+  height:40px;
+  border-radius:50%;
+  background:#1e293b;
+  align-items:center;
+  justify-content:center;
+  color:#fff;
+  transition:.3s;
 }
 
-.social-icons a:hover {
-  background: #ff3b3b;
+.social-icons a:hover{
+  background:#ff3b3b;
 }
 
-.footer-links h4,
-.footer-insta h4 {
-  margin-bottom: 20px;
-  font-size: 18px;
+.footer-links h4{
+  margin-bottom:20px;
+  font-size:18px;
 }
 
-.footer-links ul {
-  list-style: none;
-  padding: 0;
+.footer-links ul{
+  list-style:none;
+  padding:0;
 }
 
-.footer-links ul li {
-  margin-bottom: 12px;
-  color: #cbd5e1;
-  cursor: pointer;
-  transition: 0.3s;
+.footer-links ul li{
+  margin-bottom:12px;
 }
 
-.footer-links ul li:hover {
-  color: #ff3b3b;
-  padding-left: 5px;
+.footer-links ul li a{
+  color:#cbd5e1;
+  text-decoration:none;
+  transition:.3s;
 }
 
-.insta-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
+.footer-links ul li a:hover{
+  color:#ff3b3b;
+  padding-left:5px;
 }
 
-.insta-grid img {
-  width: 100%;
-  border-radius: 12px;
-  cursor: pointer;
+.footer-bottom{
+  border-top:1px solid #1e293b;
+  padding:20px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  flex-wrap:wrap;
 }
 
-.footer-bottom {
-  border-top: 1px solid #1e293b;
-  padding: 20px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
+.footer-bottom span{
+  color:#ff3b3b;
 }
 
-.footer-bottom span {
-  color: #ff3b3b;
+.bottom-links a{
+  margin-left:20px;
+  color:#cbd5e1;
+  text-decoration:none;
 }
 
-.bottom-links a {
-  margin-left: 20px;
-  color: #cbd5e1;
-  text-decoration: none;
-}
-
-.bottom-links a:hover {
-  color: #ff3b3b;
+.bottom-links a:hover{
+  color:#ff3b3b;
 }
 
 /* RESPONSIVE */
-@media(max-width: 900px) {
-  .footer-container {
-    grid-template-columns: 1fr 1fr;
+@media(max-width:900px){
+  .footer-container{
+    grid-template-columns:1fr 1fr;
   }
 }
 
-@media(max-width: 600px) {
-  .footer-container {
-    grid-template-columns: 1fr;
+@media(max-width:600px){
+  .footer-container{
+    grid-template-columns:1fr;
+    text-align:center;
   }
-  .footer-bottom {
-    text-align: center;
-    gap: 10px;
+
+  .social-icons{
+    justify-content:center;
+  }
+
+  .footer-bottom{
+    text-align:center;
+    gap:10px;
   }
 }
-
 </style>
